@@ -12,7 +12,7 @@ class Shop {
   Shop({
     required this.id,
     required this.name,
-    required this.products,
+    this.products = const [],
   });
 
   Shop copyWith({

@@ -1,69 +1,38 @@
-
-
+import 'package:expansionpanel_app/product_cart_item.dart';
 import 'package:flutter/material.dart';
 
-import 'item.dart';
-import 'models/product.dart';
+import 'models/shop.dart';
 
 class Screen extends StatelessWidget {
-  const  Screen({
+  const Screen({
     Key? key,
-    required this.productsList,
+    required this.shopsList,
   }) : super(key: key);
 
+  final List<Shop> shopsList;
 
-  final List<Product> productsList;
- @override
+ 
+  @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: ExpansionPanelList.radio(
-        children: productsList
-            .map((product) => ExpansionPanelRadio(
-                  value: product.shopId,
-                  headerBuilder: (context, isOpen) {
-                    return Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Checkbox(
-                            value: false,
-                            onChanged: (value) {},
-                            shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5)),
-                            ),
-                          ),
-                          const SizedBox(width: 10,),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text('TOFF Mall Shop'),
-                            style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        Colors.red),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
-                                  ),
-                                )),
-                          ),
-                          const SizedBox(width: 10,),
-                          Text(
-                            product.shop,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.black,
-                            ),
-                          ),
-                        ]);
-                  },
-                  body: ProductCartItem(product: product),
-                ))
-            .toList(),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Expansionpanel App'),
+        centerTitle: true,
       ),
+      body: ListView(
+        children: shopsList.map((shop) {
+          return _buildExpansionTile(shop);
+        }).toList(),
+        ),
     );
+  }
+
+  ExpansionTile _buildExpansionTile(Shop shop) {
+    return ExpansionTile(
+    title: Text(shop.name),
+    children: shop.products.map((product) {
+      return ProductCartItem(product);
+    }).toList(),
+  );
   }
 }
